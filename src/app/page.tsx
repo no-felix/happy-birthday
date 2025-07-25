@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ParticleBackground } from '@/components/ui/ParticleBackground'
+import { AnimatedBackground } from '@/components/ui/AnimatedBackground'
 import { WelcomeStage } from '@/components/stages/WelcomeStage'
 import { AgeVerificationStage } from '@/components/stages/AgeVerificationStage'
 import { DreamsStage } from '@/components/stages/DreamsStage'
@@ -83,8 +83,8 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
-      {/* Particle Background */}
-      <ParticleBackground />
+      {/* Animated Background */}
+      <AnimatedBackground />
       
       {/* Transition Overlay */}
       <AnimatePresence>
