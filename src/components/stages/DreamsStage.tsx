@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Send } from 'lucide-react'
 import { MESSAGES, DREAM_CATEGORIES } from '@/lib/utils'
@@ -19,6 +19,35 @@ export function DreamsStage({ onNext }: DreamsStageProps) {
   const [currentInput, setCurrentInput] = useState('')
   const [currentCategory, setCurrentCategory] = useState(0)
   const [showDreams, setShowDreams] = useState(false)
+  const [dreamsSent, setDreamsSent] = useState(false)
+
+  // Send dreams to Discord when they are shown
+  const sendDreamsToDiscord = useCallback(async () => {
+    try {
+      const response = await fetch('/api/send-dreams', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dreams })
+      })
+
+      if (response.ok) {
+        setDreamsSent(true)
+        console.log('Dreams successfully sent to Discord!')
+      } else {
+        console.error('Failed to send dreams to Discord')
+      }
+    } catch (error) {
+      console.error('Error sending dreams to Discord:', error)
+    }
+  }, [dreams])
+
+  useEffect(() => {
+    if (showDreams && dreams.length > 0 && !dreamsSent) {
+      sendDreamsToDiscord()
+    }
+  }, [showDreams, dreams, dreamsSent, sendDreamsToDiscord])
 
   const handleSubmitDream = () => {
     if (currentInput.trim()) {
