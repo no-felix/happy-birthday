@@ -169,14 +169,16 @@ export function AgeVerificationStage({ onNext }: AgeVerificationStageProps) {
           {/* Decorative elements */}
           <motion.div
             className="absolute top-20 left-10 text-4xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               rotate: [0, 15, -15, 0],
               scale: [1, 1.1, 1]
             }}
             transition={{ 
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 0.3, delay: 1.5 },
+              rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+              scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
             }}
           >
             🔓
@@ -184,15 +186,16 @@ export function AgeVerificationStage({ onNext }: AgeVerificationStageProps) {
 
           <motion.div
             className="absolute bottom-20 right-10 text-3xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               y: [0, -10, 0],
               rotate: [0, 10, 0]
             }}
             transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
+              opacity: { duration: 0.3, delay: 1.7 },
+              y: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 },
+              rotate: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }
             }}
           >
             🎯

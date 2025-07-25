@@ -15,14 +15,16 @@ export function WelcomeStage({ onNext }: WelcomeStageProps) {
         {/* Sparkle decorations */}
         <motion.div
           className="absolute top-10 left-10 text-4xl"
+          initial={{ opacity: 0 }}
           animate={{ 
+            opacity: 1,
             rotate: [0, 360],
             scale: [1, 1.2, 1]
           }}
           transition={{ 
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
+            opacity: { duration: 0.3, delay: 0.5 },
+            rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
           }}
         >
           ✨
@@ -30,15 +32,16 @@ export function WelcomeStage({ onNext }: WelcomeStageProps) {
         
         <motion.div
           className="absolute top-20 right-16 text-3xl"
+          initial={{ opacity: 0 }}
           animate={{ 
+            opacity: 1,
             rotate: [360, 0],
             scale: [1, 1.3, 1]
           }}
           transition={{ 
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
+            opacity: { duration: 0.3, delay: 0.7 },
+            rotate: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 },
+            scale: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }
           }}
         >
           🎉
@@ -46,15 +49,16 @@ export function WelcomeStage({ onNext }: WelcomeStageProps) {
 
         <motion.div
           className="absolute bottom-32 left-20 text-2xl"
+          initial={{ opacity: 0 }}
           animate={{ 
+            opacity: 1,
             y: [0, -20, 0],
             rotate: [0, 15, -15, 0]
           }}
           transition={{ 
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
+            opacity: { duration: 0.3, delay: 0.9 },
+            y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 2 },
+            rotate: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 2 }
           }}
         >
           🎂
@@ -138,14 +142,16 @@ export function WelcomeStage({ onNext }: WelcomeStageProps) {
         {/* Floating elements */}
         <motion.div
           className="absolute top-1/4 right-8 text-yellow-400 text-3xl"
+          initial={{ opacity: 0 }}
           animate={{ 
+            opacity: 1,
             y: [0, -15, 0],
             rotate: [0, 10, -10, 0]
           }}
           transition={{ 
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
+            opacity: { duration: 0.3, delay: 1.1 },
+            y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+            rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" }
           }}
         >
           🌟
@@ -153,15 +159,16 @@ export function WelcomeStage({ onNext }: WelcomeStageProps) {
 
         <motion.div
           className="absolute bottom-1/4 right-12 text-pink-400 text-2xl"
+          initial={{ opacity: 0 }}
           animate={{ 
+            opacity: 1,
             y: [0, -10, 0],
             x: [0, 5, 0]
           }}
           transition={{ 
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1.5
+            opacity: { duration: 0.3, delay: 1.3 },
+            y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 },
+            x: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 }
           }}
         >
           🎈

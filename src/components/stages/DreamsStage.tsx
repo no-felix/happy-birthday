@@ -265,14 +265,16 @@ export function DreamsStage({ onNext }: DreamsStageProps) {
           {/* Decorative elements */}
           <motion.div
             className="absolute top-20 left-10 text-4xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               rotate: [0, 360],
               scale: [1, 1.2, 1]
             }}
             transition={{ 
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 0.3, delay: 1.5 },
+              rotate: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+              scale: { duration: 8, repeat: Infinity, ease: "easeInOut" }
             }}
           >
             💫
@@ -280,15 +282,16 @@ export function DreamsStage({ onNext }: DreamsStageProps) {
 
           <motion.div
             className="absolute bottom-20 right-10 text-3xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               y: [0, -15, 0],
               rotate: [0, 10, -10, 0]
             }}
             transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
+              opacity: { duration: 0.3, delay: 1.7 },
+              y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 },
+              rotate: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }
             }}
           >
             🌟

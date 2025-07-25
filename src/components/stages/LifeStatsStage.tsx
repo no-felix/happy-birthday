@@ -197,14 +197,16 @@ export function LifeStatsStage({ onNext }: LifeStatsStageProps) {
           {/* Decorative elements */}
           <motion.div
             className="absolute top-10 left-10 text-4xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               scale: [1, 1.3, 1],
               rotate: [0, 15, -15, 0]
             }}
             transition={{ 
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 0.3, delay: 1.5 },
+              scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
             }}
           >
             📊
@@ -212,15 +214,16 @@ export function LifeStatsStage({ onNext }: LifeStatsStageProps) {
 
           <motion.div
             className="absolute bottom-10 right-10 text-3xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               y: [0, -10, 0],
               rotate: [0, 360]
             }}
             transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
+              opacity: { duration: 0.3, delay: 1.7 },
+              y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 },
+              rotate: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }
             }}
           >
             📈

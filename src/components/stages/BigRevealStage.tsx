@@ -272,15 +272,18 @@ export function BigRevealStage({ onRestart }: BigRevealStageProps) {
           {/* Floating decorative elements */}
           <motion.div
             className="absolute top-10 left-10 text-5xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               y: [0, -20, 0],
               rotate: [0, 360],
               scale: [1, 1.4, 1]
             }}
             transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 0.3, delay: 2 },
+              y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+              scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
             }}
           >
             🌟
@@ -288,16 +291,18 @@ export function BigRevealStage({ onRestart }: BigRevealStageProps) {
 
           <motion.div
             className="absolute top-20 right-10 text-4xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               y: [0, -15, 0],
               rotate: [0, -360],
               scale: [1, 1.2, 1]
             }}
             transition={{ 
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
+              opacity: { duration: 0.3, delay: 2.2 },
+              y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 },
+              rotate: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 },
+              scale: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }
             }}
           >
             🎊
@@ -305,16 +310,18 @@ export function BigRevealStage({ onRestart }: BigRevealStageProps) {
 
           <motion.div
             className="absolute bottom-20 left-16 text-4xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               x: [0, 15, 0],
               rotate: [0, 180, 360],
               scale: [1, 1.3, 1]
             }}
             transition={{ 
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
+              opacity: { duration: 0.3, delay: 2.4 },
+              x: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 },
+              rotate: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 },
+              scale: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }
             }}
           >
             🎁
@@ -322,16 +329,18 @@ export function BigRevealStage({ onRestart }: BigRevealStageProps) {
 
           <motion.div
             className="absolute bottom-10 right-20 text-3xl"
+            initial={{ opacity: 0 }}
             animate={{ 
+              opacity: 1,
               y: [0, -25, 0],
               rotate: [0, 720],
               scale: [1, 1.5, 1]
             }}
             transition={{ 
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 0.5
+              opacity: { duration: 0.3, delay: 2.6 },
+              y: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
+              rotate: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
+              scale: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
             }}
           >
             🎉
