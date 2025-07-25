@@ -1,103 +1,156 @@
-import Image from "next/image";
+'use client'
+
+import { useState, useEffect, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ParticleBackground } from '@/components/ui/ParticleBackground'
+import { WelcomeStage } from '@/components/stages/WelcomeStage'
+import { AgeVerificationStage } from '@/components/stages/AgeVerificationStage'
+import { DreamsStage } from '@/components/stages/DreamsStage'
+import { LifeStatsStage } from '@/components/stages/LifeStatsStage'
+import { BigRevealStage } from '@/components/stages/BigRevealStage'
+import { STAGES, type Stage } from '@/lib/utils'
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentStage, setCurrentStage] = useState<Stage>(STAGES.WELCOME)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // Load saved progress from localStorage
+  useEffect(() => {
+    const savedStage = localStorage.getItem('birthdayStage')
+    if (savedStage && Object.values(STAGES).includes(savedStage as Stage)) {
+      setCurrentStage(savedStage as Stage)
+    }
+  }, [])
+
+  // Save progress to localStorage
+  useEffect(() => {
+    localStorage.setItem('birthdayStage', currentStage)
+  }, [currentStage])
+
+  const handleStageTransition = useCallback((nextStage: Stage) => {
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentStage(nextStage)
+      setIsTransitioning(false)
+    }, 500)
+  }, [])
+
+  const handleNext = useCallback(() => {
+    switch (currentStage) {
+      case STAGES.WELCOME:
+        handleStageTransition(STAGES.AGE_VERIFICATION)
+        break
+      case STAGES.AGE_VERIFICATION:
+        handleStageTransition(STAGES.MEMORY_LANE)
+        break
+      case STAGES.MEMORY_LANE:
+        handleStageTransition(STAGES.WISHES)
+        break
+      case STAGES.WISHES:
+        handleStageTransition(STAGES.BIG_REVEAL)
+        break
+      default:
+        break
+    }
+  }, [currentStage, handleStageTransition])
+
+  const handleRestart = useCallback(() => {
+    localStorage.removeItem('birthdayStage')
+    handleStageTransition(STAGES.WELCOME)
+  }, [handleStageTransition])
+
+  const renderCurrentStage = () => {
+    switch (currentStage) {
+      case STAGES.WELCOME:
+        return <WelcomeStage onNext={handleNext} />
+      case STAGES.AGE_VERIFICATION:
+        return <AgeVerificationStage onNext={handleNext} />
+      case STAGES.MEMORY_LANE:
+        return <DreamsStage onNext={handleNext} />
+      case STAGES.WISHES:
+        return <LifeStatsStage onNext={handleNext} />
+      case STAGES.BIG_REVEAL:
+        return <BigRevealStage onRestart={handleRestart} />
+      default:
+        return <WelcomeStage onNext={handleNext} />
+    }
+  }
+
+  return (
+    <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      {/* Particle Background */}
+      <ParticleBackground />
+      
+      {/* Transition Overlay */}
+      <AnimatePresence>
+        {isTransitioning && (
+          <motion.div
+            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <motion.div
+              className="text-4xl text-yellow-400"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                rotate: [0, 360]
+              }}
+              transition={{ 
+                duration: 1,
+                repeat: Infinity
+              }}
+            >
+              ✨
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Stage Content */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStage}
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -100 }}
+          transition={{ 
+            duration: 0.6,
+            ease: "easeInOut"
+          }}
+          className="relative z-10"
+        >
+          {renderCurrentStage()}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Stage Progress Indicator (hidden on welcome and big reveal) */}
+      {currentStage !== STAGES.WELCOME && currentStage !== STAGES.BIG_REVEAL && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="flex gap-2 bg-gray-800/50 backdrop-blur-sm rounded-full px-4 py-2">
+            {Object.values(STAGES).slice(1, -1).map((stage, index) => {
+              const stageIndex = Object.values(STAGES).indexOf(currentStage)
+              const targetIndex = index + 1
+              
+              return (
+                <div
+                  key={stage}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    stageIndex >= targetIndex
+                      ? 'bg-yellow-400'
+                      : 'bg-gray-600'
+                  }`}
+                />
+              )
+            })}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      )}
+
+      {/* Background gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/20 pointer-events-none" />
+    </main>
+  )
 }
