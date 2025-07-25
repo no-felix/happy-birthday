@@ -24,22 +24,82 @@ export function DreamsStage({ onNext }: DreamsStageProps) {
   // Send dreams to Discord when they are shown
   const sendDreamsToDiscord = useCallback(async () => {
     try {
-      const response = await fetch('/api/send-dreams', {
+      // Get the Discord webhook URL from environment variable
+      const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL
+      
+      console.log('Discord webhook URL configured:', !!webhookUrl)
+      
+      // Skip Discord integration in development to avoid CORS issues
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Skipping Discord integration in development mode')
+        setDreamsSent(true)
+        return
+      }
+      
+      if (!webhookUrl) {
+        console.warn('Discord webhook URL not configured - skipping Discord integration')
+        setDreamsSent(true)
+        return
+      }
+
+      // Format dreams for Discord
+      const dreamsText = dreams.map((dream) => {
+        const category = DREAM_CATEGORIES.find(cat => cat.id === dream.categoryId)
+        return `${category?.emoji} **${category?.title}**\n${dream.text}\n`
+      }).join('\n')
+
+      const embed = {
+        title: "🎂 Alinas Geburtstags-Träume",
+        description: `Hier sind die Träume und Wünsche, die Alina zu ihrem 18. Geburtstag geteilt hat:\n\n${dreamsText}`,
+        color: 0x8B5CF6, // Purple color
+        timestamp: new Date().toISOString(),
+        footer: {
+          text: "Happy Birthday Alina! 🎉"
+        },
+        fields: [
+          {
+            name: "🌟 Anzahl der Träume",
+            value: dreams.length.toString(),
+            inline: true
+          },
+          {
+            name: "📅 Datum",
+            value: new Date().toLocaleDateString('de-DE'),
+            inline: true
+          }
+        ]
+      }
+
+      const discordPayload = {
+        content: "🎈 **Neue Geburtstags-Träume eingegangen!** 🎈",
+        embeds: [embed]
+      }
+
+      console.log('Attempting to send dreams to Discord...')
+      
+      // Direct call to Discord webhook (works on GitHub Pages)
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ dreams })
+        body: JSON.stringify(discordPayload)
       })
 
+      console.log('Response status:', response.status)
+      
       if (response.ok) {
         setDreamsSent(true)
         console.log('Dreams successfully sent to Discord!')
       } else {
-        console.error('Failed to send dreams to Discord')
+        const errorText = await response.text().catch(() => 'Unknown error')
+        console.error('Failed to send dreams to Discord. Status:', response.status, response.statusText, 'Error:', errorText)
+        setDreamsSent(true)
       }
     } catch (error) {
-      console.error('Error sending dreams to Discord:', error)
+      console.error('Network error when sending dreams to Discord:', error)
+      // Still mark as sent to prevent blocking the UI
+      setDreamsSent(true)
     }
   }, [dreams])
 
