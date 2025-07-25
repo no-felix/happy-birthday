@@ -30,10 +30,14 @@ export default function Home() {
   const handleStageTransition = useCallback((nextStage: Stage) => {
     setIsTransitioning(true)
     
+    // Change stage earlier so the new stage can start animating while overlay fades out
     setTimeout(() => {
       setCurrentStage(nextStage)
+    }, 250) // Start new stage animation halfway through transition
+    
+    setTimeout(() => {
       setIsTransitioning(false)
-    }, 500)
+    }, 500) // Overlay continues for full duration
   }, [])
 
   const handleNext = useCallback(() => {
@@ -90,7 +94,9 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ 
+              duration: 0.25,
+            }}
           >
             <motion.div
               className="text-4xl text-yellow-400"
@@ -99,7 +105,7 @@ export default function Home() {
                 rotate: [0, 360]
               }}
               transition={{ 
-                duration: 1,
+                duration: 0.8, // Slightly faster spin
                 repeat: Infinity
               }}
             >
@@ -113,12 +119,12 @@ export default function Home() {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStage}
-          initial={{ opacity: 0, y: 100 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -100 }}
+          exit={{ opacity: 0, y: -50 }}
           transition={{ 
-            duration: 0.6,
-            ease: "easeInOut"
+            duration: 0.4, // Faster animation
+            ease: "easeOut" // Smoother easing
           }}
           className="relative z-10"
         >
